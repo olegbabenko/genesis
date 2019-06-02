@@ -44,6 +44,11 @@ class UserManager
     public function addUser($data): bool
     {
         $result = false;
+        $existData = file_get_contents(Users::JSON_FILE_PATH);
+
+        if ($existData !== ''){
+            $data = $this->mergeData($data, $existData);
+        }
 
         try {
             $result = file_put_contents(Users::JSON_FILE_PATH, $data);
@@ -52,5 +57,23 @@ class UserManager
         }
 
         return $result;
+    }
+
+    /**
+     * @param $newData
+     * @param $existData
+     *
+     * @return false|string
+     */
+    private function mergeData($newData, $existData): ?string
+    {
+        $newArray = [];
+        $newDataArray = json_decode($newData, true);
+        $existDataArray = json_decode($existData, true);
+
+        $newArray[] = $existDataArray;
+        $newArray[] = $newDataArray;
+
+        return json_encode($newArray);
     }
 }
