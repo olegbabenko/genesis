@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 use App\Service\UserManager;
 
@@ -16,7 +16,7 @@ use App\Service\UserManager;
  *
  * @package App\Controller
  */
-class UserController
+class UserController extends ApiController
 {
     /**
      * @var UserManager
@@ -36,11 +36,17 @@ class UserController
     /**
      * @Route("/users", methods={"GET"})
      *
-     * @return Response
+     * @return JsonResponse
      */
-    public function getUsers(): Response
+    public function getUsers(): JsonResponse
     {
-        return new Response($this->userManager->getUsers());
+        $result = $this->userManager->getUsers();
+
+        if (!$result) {
+            return $this->notFound('Users not found');
+        }
+
+        return $this->success($result);
     }
 
     /**
@@ -48,12 +54,16 @@ class UserController
      *
      * @Route("/users", methods={"POST"})
      *
-     * @return Response
+     * @return JsonResponse
      */
-    public function addUsers(Request $request): Response
+    public function addUsers(Request $request): JsonResponse
     {
         $result = $this->userManager->addUser($request->getContent());
 
-        return new Response($result);
+        if (!$result){
+            return $this->error('User does not added, try again later');
+        }
+
+        return $this->createSuccess('User has been added');
     }
 }

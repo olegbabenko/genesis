@@ -13,11 +13,11 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 class UserRepository
 {
     /**
-     * @return false|string
+     * @return string|null
      */
     public function getUsers(): ?string
     {
-        $users = '';
+        $users = null;
 
         try {
             $users = file_get_contents(Users::JSON_FILE_PATH);

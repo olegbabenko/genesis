@@ -29,9 +29,9 @@ class UserManager
     }
 
     /**
-     * @return false|string
+     * @return string|null
      */
-    public function getUsers()
+    public function getUsers(): ?string
     {
         return $this->userRepository->getUsers();
     }
