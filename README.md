@@ -31,6 +31,11 @@ Add this line into file:
 
 127.0.0.1  genesis.test
 
-Save the changes and quit form file.
+Save the changes and quit.
 
-After that, go to the url: htt://genesis.test and enjoy the application
+After that, go to the url: http://genesis.test and enjoy the application.
+
+
+#####Route list
+* http://genesis.test/api/users    GET - list of all users
+* http://genesis.test/api/users    POST - add new user (registration)

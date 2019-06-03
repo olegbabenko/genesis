@@ -43,11 +43,11 @@ class ApiController
     }
 
     /**
-     * @param string $message
+     * @param array $message
      *
      * @return JsonResponse
      */
-    public function error(string $message): JsonResponse
+    public function error(array $message): JsonResponse
     {
         return new JsonResponse([
             Api::STATUS => Api::STATUS_BAD_REQUEST,

@@ -1,7 +1,7 @@
 {
 	"firstname": "john",
 	"lastname": "doe",
-	"nickname": "john",
+	"nickname": "john_doe",
 	"age": 30,
-	"password": "qwerty"
+	"password": "qwertyqwerty"
 }

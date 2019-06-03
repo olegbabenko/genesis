@@ -3,8 +3,13 @@
 namespace App\Service;
 
 use App\Dictionary\Users;
+use App\Dictionary\Api;
 use App\Repository\UserRepository;
+
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class UserManager
@@ -37,7 +42,7 @@ class UserManager
     }
 
     /**
-     * @param $data
+     * @param array $data
      *
      * @return bool
      */
@@ -47,7 +52,8 @@ class UserManager
         $existData = file_get_contents(Users::JSON_FILE_PATH);
 
         if ($existData !== ''){
-            $data = $this->mergeData($data, $existData);
+            $existData = json_decode($existData, true);
+            $data = json_encode($this->mergeData($data, $existData));
         }
 
         try {
@@ -60,20 +66,85 @@ class UserManager
     }
 
     /**
-     * @param $newData
-     * @param $existData
+     * @param array $newData
+     * @param array $existData
      *
-     * @return false|string
+     * @return array
      */
-    private function mergeData($newData, $existData): ?string
+    private function mergeData(array $newData, array $existData): array
     {
-        $newArray = [];
-        $newDataArray = json_decode($newData, true);
-        $existDataArray = json_decode($existData, true);
+        $newArray[] = $existData;
+        $newArray[] = $newData;
 
-        $newArray[] = $existDataArray;
-        $newArray[] = $newDataArray;
+        return $newArray;
+    }
 
-        return json_encode($newArray);
+    /**
+     * @param array              $data
+     * @param ValidatorInterface $validator
+     *
+     * @return array
+     */
+    public function registrationIsValidate(array $data, ValidatorInterface $validator): array
+    {
+        $firstName = null;
+        $lastName = null;
+        $nickName = null;
+        $age = null;
+        $password = null;
+
+        if (array_key_exists(Users::FIRST_NAME, $data)){
+            $firstName = $data[Users::FIRST_NAME];
+        }
+
+        if (array_key_exists(Users::LAST_NAME, $data)){
+            $lastName = $data[Users::LAST_NAME];
+        }
+
+        if (array_key_exists(Users::NICK_NAME, $data)){
+            $nickName = $data[Users::NICK_NAME];
+        }
+
+        if (array_key_exists(Users::AGE, $data)){
+            $age = $data[Users::AGE];
+        }
+
+        if (array_key_exists(Users::PASSWORD, $data)){
+            $password = $data[Users::PASSWORD];
+        }
+
+        $input = [
+            Users::FIRST_NAME => $firstName,
+            Users::LAST_NAME => $lastName,
+            Users::NICK_NAME => $nickName,
+            Users::AGE => $age,
+            Users::PASSWORD => $password
+        ];
+
+        $constraints = new Assert\Collection([
+            Users::FIRST_NAME => [new Assert\Length(['min' => 3]), new Assert\NotBlank],
+            Users::LAST_NAME => [new Assert\Length(['min' => 2]), new Assert\NotBlank],
+            Users::NICK_NAME => [new Assert\Length(['min' => 5]), new Assert\NotBlank],
+            Users::AGE => [new Assert\Positive(), new Assert\GreaterThan(17), new Assert\NotBlank],
+            Users::PASSWORD => [new Assert\Length(['min' => 8]), new Assert\NotBlank]
+        ]);
+
+        $violations = $validator->validate($input, $constraints);
+
+        if (count($violations) > 0) {
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $errorMessages = [];
+
+            foreach ($violations as $violation) {
+
+                $accessor->setValue($errorMessages,
+                    $violation->getPropertyPath(),
+                    $violation->getMessage());
+            }
+
+            return $errorMessages;
+        }
+
+        return [Api::STATUS => true ];
     }
 }
