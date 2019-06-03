@@ -1,7 +1,4 @@
-{
-	"firstname": "john",
-	"lastname": "doe",
-	"nickname": "john_doe",
-	"age": 30,
-	"password": "qwertyqwerty"
-}
+[
+	{"firstname":"john","lastname":"doe","nickname":"john_doe","age":30,"password":"qwertyqwerty"},
+	{"firstname":"johns","lastname":"doe","nickname":"johns_doe","age":19,"password":"qwerty123456"}
+]

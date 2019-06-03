@@ -136,7 +136,6 @@ class UserManager
             $errorMessages = [];
 
             foreach ($violations as $violation) {
-
                 $accessor->setValue($errorMessages,
                     $violation->getPropertyPath(),
                     $violation->getMessage());
@@ -145,6 +144,27 @@ class UserManager
             return $errorMessages;
         }
 
-        return [Api::STATUS => true ];
+        return [Api::STATUS => true];
+    }
+
+    /**
+     * @param string $nickName
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function login(string $nickName, string $password): bool
+    {
+        $users = json_decode($this->getUsers(),true);
+
+        foreach ($users as $user){
+            if ($user[Users::NICK_NAME] === $nickName &&
+                $user[Users::PASSWORD] === $password
+            ){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
