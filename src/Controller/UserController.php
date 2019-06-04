@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use App\Service\UserManager;
 use App\Dictionary\Api;
+use App\Traits\JsonParser;
 
 /**
  * Class UserController
@@ -20,6 +21,8 @@ use App\Dictionary\Api;
  */
 class UserController extends ApiController
 {
+    use JsonParser;
+
     /**
      * @var UserManager
      */
@@ -62,7 +65,7 @@ class UserController extends ApiController
      */
     public function addUsers(Request $request, ValidatorInterface $validator): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        $data = $this->jsonDecode($request);
         $validateResult = $this->userManager->registrationIsValidate($data, $validator);
 
         if (!array_key_exists(Api::STATUS, $validateResult)) {

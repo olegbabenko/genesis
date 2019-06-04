@@ -1,5 +1,6 @@
 # Genesis
-Test task for Genesis
+Test task for Genesis 
+https://github.com/socialtechio/auth-service/blob/master/TechnicalTask.md
 
 * Build the images
 
@@ -39,3 +40,4 @@ After that, go to the url: http://genesis.test and enjoy the application.
 #####Route list
 * http://genesis.test/api/users    GET - list of all users
 * http://genesis.test/api/users    POST - add new user (registration)
+* http://genesis.test/api/login    POST - user login 

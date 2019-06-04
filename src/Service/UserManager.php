@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Dictionary\Users;
 use App\Dictionary\Api;
 use App\Repository\UserRepository;
+use App\Traits\JsonParser;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,6 +19,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class UserManager
 {
+    use JsonParser;
+
     /**
      * @var UserRepository
      */
@@ -46,14 +49,14 @@ class UserManager
      *
      * @return bool
      */
-    public function addUser($data): bool
+    public function addUser(array $data): bool
     {
         $result = false;
         $existData = file_get_contents(Users::JSON_FILE_PATH);
 
         if ($existData !== ''){
-            $existData = json_decode($existData, true);
-            $data = json_encode($this->mergeData($data, $existData));
+            $existData = $this->jsonDecode($existData);
+            $data = $this->jsonEncode($this->mergeData($data, $existData));
         }
 
         try {
@@ -155,16 +158,8 @@ class UserManager
      */
     public function login(string $nickName, string $password): bool
     {
-        $users = json_decode($this->getUsers(),true);
+        $user = $this->userRepository->getUserByNickname($nickName);
 
-        foreach ($users as $user){
-            if ($user[Users::NICK_NAME] === $nickName &&
-                $user[Users::PASSWORD] === $password
-            ){
-                return true;
-            }
-        }
-
-        return false;
+        return $user[Users::NICK_NAME] === $nickName && $user[Users::PASSWORD] === $password;
     }
 }

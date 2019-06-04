@@ -10,14 +10,14 @@ use App\Dictionary\Api;
  *
  * @package App\Controller
  */
-class ApiController
+abstract class ApiController
 {
     /**
      * @param string $data
      *
      * @return JsonResponse
      */
-    public function success(string $data): JsonResponse
+    protected function success(string $data): JsonResponse
     {
         return new JsonResponse([
             Api::STATUS => Api::STATUS_OK,
@@ -32,7 +32,7 @@ class ApiController
      *
      * @return JsonResponse
      */
-    public function createSuccess(string $message): JsonResponse
+    protected function createSuccess(string $message): JsonResponse
     {
         return new JsonResponse([
             Api::STATUS => Api::STATUS_OK,
@@ -47,7 +47,7 @@ class ApiController
      *
      * @return JsonResponse
      */
-    public function error(array $message): JsonResponse
+    protected function error(array $message): JsonResponse
     {
         return new JsonResponse([
             Api::STATUS => Api::STATUS_BAD_REQUEST,
@@ -62,7 +62,7 @@ class ApiController
      *
      * @return JsonResponse
      */
-    public function notFound(string $message): JsonResponse
+    protected function notFound(string $message): JsonResponse
     {
         return new JsonResponse([
             Api::STATUS => Api::STATUS_NOT_FOUND,

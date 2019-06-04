@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Dictionary\Api;
 use App\Dictionary\Users;
 use App\Service\UserManager;
+use App\Traits\JsonParser;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class LoginController
@@ -19,6 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class LoginController extends ApiController
 {
+    use JsonParser;
+
     /**
      * @var UserManager
      */
@@ -43,7 +47,7 @@ class LoginController extends ApiController
      */
     public function userLogin(Request $request): JsonResponse
     {
-        $userData = json_decode($request->getContent(), true);
+        $userData = $this->jsonDecode($request->getContent());
 
         if (!array_key_exists(Users::NICK_NAME, $userData)){
             return $this->error($this->getMessage(Users::NICK_NAME));
@@ -58,6 +62,11 @@ class LoginController extends ApiController
         if (!$result){
             return $this->notFound('Nickname or password is not correct');
         }
+
+        // TODO add memcached for storing sessions
+        $session = new Session();
+        $session->start();
+        $session->set('name', '_sessid');
 
         return $this->success('Authorization was successful');
     }
