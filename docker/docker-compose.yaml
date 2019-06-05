@@ -8,6 +8,10 @@ services:
         volumes:
             - ../:/var/www/symfony:cached
             - ./logs/symfony:/var/www/symfony/var/logs:cached
+        links:
+          - rabbitmq
+        environment:
+            - AMPQ_ADDRESS=amqp://rabbitmq:5672
 
     nginx:
         build: nginx
@@ -20,3 +24,16 @@ services:
             - php
         volumes:
             - ./logs/nginx/:/var/log/nginx:cached
+
+    rabbitmq:
+        build: rabbitmq
+        container_name: genesis_rabbitmq
+        hostname: rabbitmq
+        ports:
+            - '5672:5672'
+            - '15672:15672'
+        environment:
+            RABBITMQ_ERLANG_COOKIE: 6085e2412b6fa88647466c6a81c0cea0
+            RABBITMQ_DEFAULT_USER: rabbitmq
+            RABBITMQ_DEFAULT_PASS: rabbitmq
+            RABBITMQ_DEFAULT_VHOST: /

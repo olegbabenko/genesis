@@ -29,13 +29,20 @@ class TrackingManager
     private $statsRepository;
 
     /**
+     * @var QueueManager
+     */
+    private $queueManager;
+
+    /**
      * TrackingManager constructor.
      *
-     * @param StatsRepository $statsRepository
+     * @param StatsRepository           $statsRepository
+     * @param QueueManager              $queueManager
      */
-    public function __construct(StatsRepository $statsRepository)
+    public function __construct(StatsRepository $statsRepository, QueueManager $queueManager)
     {
         $this->statsRepository = $statsRepository;
+        $this->queueManager = $queueManager;
     }
 
     /**
@@ -119,6 +126,7 @@ class TrackingManager
         if ($existStats !== ''){
             $existStats = $this->jsonDecode($existStats);
             $data = $this->jsonEncode($this->mergeData($existStats, $data));
+            $this->queueManager->sendMessage($data);
         }
 
         try {

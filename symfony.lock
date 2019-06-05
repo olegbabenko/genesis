@@ -1,4 +1,7 @@
 {
+    "bunny/bunny": {
+        "version": "v0.4.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -32,6 +35,45 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "enqueue/amqp-bunny": {
+        "version": "0.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.7",
+            "ref": "2ef9206636a23f2c50936de195f6bc54247dea65"
+        }
+    },
+    "enqueue/amqp-tools": {
+        "version": "0.9.8"
+    },
+    "enqueue/dsn": {
+        "version": "0.9.2"
+    },
+    "enqueue/enqueue": {
+        "version": "0.9.11"
+    },
+    "enqueue/enqueue-bundle": {
+        "version": "0.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.9",
+            "ref": "a025d0d707c6a7fefb8903f1c9844700dc69ee9d"
+        }
+    },
+    "enqueue/fs": {
+        "version": "0.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.4",
+            "ref": "4d45d1e6b113832ad13f6d321506c004ed12fe2e"
+        }
+    },
+    "enqueue/null": {
+        "version": "0.9.2"
+    },
     "friendsofsymfony/rest-bundle": {
         "version": "2.2",
         "recipe": {
@@ -44,6 +86,9 @@
             "config/packages/fos_rest.yaml"
         ]
     },
+    "makasim/temp-file": {
+        "version": "0.2.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -52,6 +97,21 @@
     },
     "psr/log": {
         "version": "1.1.0"
+    },
+    "queue-interop/amqp-interop": {
+        "version": "0.8.1"
+    },
+    "queue-interop/queue-interop": {
+        "version": "0.8.0"
+    },
+    "ramsey/uuid": {
+        "version": "3.8.0"
+    },
+    "react/event-loop": {
+        "version": "v1.1.0"
+    },
+    "react/promise": {
+        "version": "v2.7.1"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
