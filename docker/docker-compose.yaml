@@ -37,3 +37,10 @@ services:
             RABBITMQ_DEFAULT_USER: rabbitmq
             RABBITMQ_DEFAULT_PASS: rabbitmq
             RABBITMQ_DEFAULT_VHOST: /
+
+    memcached:
+        image: memcached
+        container_name: genesis_memcached
+        hostname: memcached
+        environment:
+            - MEMCACHED_MEMORY_LIMIT=128

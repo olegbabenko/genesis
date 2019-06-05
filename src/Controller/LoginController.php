@@ -63,7 +63,6 @@ class LoginController extends ApiController
             return $this->notFound('Nickname or password is not correct');
         }
 
-        // TODO add memcached for storing sessions
         $session = new Session();
         $session->start();
         $session->set('name', '_sessid');
