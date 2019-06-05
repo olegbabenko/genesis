@@ -41,3 +41,5 @@ After that, go to the url: http://genesis.test and enjoy the application.
 * http://genesis.test/api/users    GET - list of all users
 * http://genesis.test/api/users    POST - add new user (registration)
 * http://genesis.test/api/login    POST - user login 
+* http://genesis.test/api/stats    GET - list of all user tracking stats
+* http://genesis.test/api/stats    POST - add new record to user tracking stats

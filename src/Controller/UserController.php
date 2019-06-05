@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -65,7 +65,7 @@ class UserController extends ApiController
      */
     public function addUsers(Request $request, ValidatorInterface $validator): JsonResponse
     {
-        $data = $this->jsonDecode($request);
+        $data = $this->jsonDecode($request->getContent());
         $validateResult = $this->userManager->registrationIsValidate($data, $validator);
 
         if (!array_key_exists(Api::STATUS, $validateResult)) {

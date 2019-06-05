@@ -6,11 +6,11 @@ use App\Dictionary\Users;
 use App\Dictionary\Api;
 use App\Repository\UserRepository;
 use App\Traits\JsonParser;
+use App\Traits\ErrorParser;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class UserManager
@@ -20,6 +20,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class UserManager
 {
     use JsonParser;
+    use ErrorParser;
 
     /**
      * @var UserRepository
@@ -133,18 +134,10 @@ class UserManager
         ]);
 
         $violations = $validator->validate($input, $constraints);
+        $errors = $this->checkErrors($violations);
 
-        if (count($violations) > 0) {
-            $accessor = PropertyAccess::createPropertyAccessor();
-            $errorMessages = [];
-
-            foreach ($violations as $violation) {
-                $accessor->setValue($errorMessages,
-                    $violation->getPropertyPath(),
-                    $violation->getMessage());
-            }
-
-            return $errorMessages;
+        if (count($errors) > 0 ){
+            return $errors;
         }
 
         return [Api::STATUS => true];
