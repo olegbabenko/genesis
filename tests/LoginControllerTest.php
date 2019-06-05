@@ -4,7 +4,6 @@ namespace tests;
 
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
-use Psr\Http\Message\StreamInterface;
 
 /**
  * Class LoginControllerTest
@@ -14,9 +13,9 @@ use Psr\Http\Message\StreamInterface;
 class LoginControllerTest extends TestCase
 {
     /**
-     * @return
+     * @return void
      */
-    public function testUserLogin()
+    public function testUserLogin(): void
     {
         $client = new  Client(array(
             'base_uri' => 'http://localhost',
