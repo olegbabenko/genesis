@@ -7,6 +7,7 @@ use App\Dictionary\Api;
 use App\Repository\UserRepository;
 use App\Traits\JsonParser;
 use App\Traits\ErrorParser;
+use App\Traits\DataCollector;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,6 +22,7 @@ class UserManager
 {
     use JsonParser;
     use ErrorParser;
+    use DataCollector;
 
     /**
      * @var UserRepository
@@ -53,11 +55,11 @@ class UserManager
     public function addUser(array $data): bool
     {
         $result = false;
-        $existData = file_get_contents(Users::JSON_FILE_PATH);
+        $existData = $this->userRepository->getUsers();
 
         if ($existData !== ''){
             $existData = $this->jsonDecode($existData);
-            $data = $this->jsonEncode($this->mergeData($data, $existData));
+            $data = $this->jsonEncode($this->mergeData($existData, $data));
         }
 
         try {
@@ -67,20 +69,6 @@ class UserManager
         }
 
         return $result;
-    }
-
-    /**
-     * @param array $newData
-     * @param array $existData
-     *
-     * @return array
-     */
-    private function mergeData(array $newData, array $existData): array
-    {
-        $newArray[] = $existData;
-        $newArray[] = $newData;
-
-        return $newArray;
     }
 
     /**

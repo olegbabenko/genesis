@@ -6,9 +6,11 @@ use App\Dictionary\Stats;
 use App\Repository\StatsRepository;
 use App\Traits\JsonParser;
 use App\Traits\ErrorParser;
+use App\Traits\DataCollector;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * Class TrackingManager
@@ -19,6 +21,7 @@ class TrackingManager
 {
     use JsonParser;
     use ErrorParser;
+    use DataCollector;
 
     /**
      * @var StatsRepository
@@ -101,5 +104,29 @@ class TrackingManager
         $violations = $validator->validate($input, $constraints);
 
         return $this->checkErrors($violations);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function addStats(array $data): bool
+    {
+        $result = false;
+        $existStats = $this->statsRepository->getAll();
+
+        if ($existStats !== ''){
+            $existStats = $this->jsonDecode($existStats);
+            $data = $this->jsonEncode($this->mergeData($existStats, $data));
+        }
+
+        try {
+            $result = file_put_contents(Stats::JSON_FILE_PATH, $data);
+        } catch (FileException $fileException){
+            echo $fileException->getMessage();
+        }
+
+        return $result;
     }
 }

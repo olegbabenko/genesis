@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\TrackingManager;
 use App\Traits\JsonParser;
+use App\Dictionary\Api;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -70,7 +71,12 @@ class TrackingController extends ApiController
         }
 
         $data = $this->trackingManager->prepareData($data);
+        $result = $this->trackingManager->addStats($data);
 
-        // must be saving data to json file
+        if (!$result){
+            return $this->error([Api::MESSAGE => 'Stats data does not added, try again later']);
+        }
+
+        return $this->createSuccess('Stats data has been added');
     }
 }
