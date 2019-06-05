@@ -8,6 +8,7 @@
         "enqueue/amqp-bunny": "^0.9.11",
         "enqueue/enqueue-bundle": "^0.9.10",
         "enqueue/fs": "^0.9.8",
+        "guzzlehttp/guzzle": "^6.3",
         "sensio/framework-extra-bundle": "^5.3",
         "symfony/console": "4.3.*",
         "symfony/dotenv": "4.3.*",
@@ -61,5 +62,8 @@
             "allow-contrib": false,
             "require": "4.3.*"
         }
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "4.3.*"
     }
 }
