@@ -6,13 +6,13 @@
 parameters:
 
     rabbitmq:
-        rabbitmq_host: 'localhost'
-        rabbitmq_user: 'rabbitmq'
-        rabbitmq_password: 'rabbitmq'
+        rabbitmq_host: ${RABBITMQ_HOST}
+        rabbitmq_user: ${RABBITMQ_USER}
+        rabbitmq_password: ${RABBITMQ_PASSWORD}
 
     memcached.servers:
-        - memcached://memcached1:11211
-        - memcached://memcached2:11211
+        - ${MEMCACHED_SERVER_1}
+        - ${MEMCACHED_SERVER_2}
     memcached.config: {distribution: 'consistent', compression: true}
 
 services:

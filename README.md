@@ -37,7 +37,7 @@ Save the changes and quit.
 After that, go to the url: http://genesis.test and enjoy the application.
 
 
-###Route list
+### Route list
 * http://genesis.test/api/users    GET - list of all users
 * http://genesis.test/api/users    POST - add new user (registration)
 * http://genesis.test/api/login    POST - user login 
